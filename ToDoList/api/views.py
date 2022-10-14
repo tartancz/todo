@@ -24,7 +24,7 @@ from .serializers import (
 
 
 class ProfileViewSet(mixins.RetrieveModelMixin,
-                     mixins.DestroyModelMixin,
+                     mixins.ListModelMixin,
                      GenericViewSet
                      ):
     serializer_class = ProfileSerializer
