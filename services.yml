@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_DATABASE=todo
+      - MYSQL_USER=todo
+      - MYSQL_PASSWORD=todo
+      - MYSQL_ROOT_PASSWORD=todo
+    ports:
+     - '5432:3306'

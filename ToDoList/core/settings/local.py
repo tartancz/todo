@@ -3,6 +3,21 @@ from .base import *
 SECRET_KEY = "django-insecure-z1@0j5gm_&o*^7*nh*7vp(ia8vh*%p4ogde6(q*79ckv2g=tfk"
 
 DEBUG_TOOLBAR = True
+#set False if u dont have docker
+MYSQL_DOCKER = True
+
+if MYSQL_DOCKER:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "PORT": 5432,
+            "HOST": 'localhost',
+            "NAME": 'todo',
+            "USER": 'root',
+            "PASSWORD": 'todo',
+        }
+    }
+
 
 if DEBUG_TOOLBAR:
     INSTALLED_APPS.append("debug_toolbar")
