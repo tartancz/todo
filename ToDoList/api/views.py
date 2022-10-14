@@ -17,6 +17,7 @@ from .pagination import StandardResultsSetPagination
 from .permissions import IsOwnerOrReadOnlyToDO, IsOwnerOrReadOnlyProfile
 from .serializers import (
     ProfileSerializer,
+    ProfileSerializerOwner,
     CommentSerializer,
     ToDoSerializer,
 )
@@ -32,6 +33,7 @@ class ProfileViewSet(mixins.RetrieveModelMixin,
     queryset = Profile.objects.all()
     permission_classes = [IsOwnerOrReadOnlyProfile]
     pagination_class = StandardResultsSetPagination
+
 
     def destroy(self, request, *args, **kwargs):
         return Response({'detail': f'u cant delete account this way'}, status=HTTP_405_METHOD_NOT_ALLOWED)

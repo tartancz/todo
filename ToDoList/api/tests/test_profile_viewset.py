@@ -13,7 +13,7 @@ def test_get_profile_not_authenticated(api_client, user):
     assert user.profile.profile_pic.url in data['profile_pic']
     assert data['gender'] == user.profile.gender.gender_name
     assert len(data['todo']['results']) == user.todos.filter(public=True).count()
-    assert data['username'] == 'permission denied'
+    assert user.username not in data
     assert response.status_code == 200
 
 
@@ -26,7 +26,7 @@ def test_get_profile_auth(api_client, user):
     assert user.profile.profile_pic.url in data['profile_pic']
     assert data['gender'] == user.profile.gender.gender_name
     assert len(data['todo']['results']) == user.todos.filter((Q(public=True) | Q(created_by=user))).count()
-    assert data['username'] == user.username
+    assert user.username not in data
     assert response.status_code == 200
 
 
@@ -40,8 +40,9 @@ def test_get_profile_auth_not_owner(api_client, user):
     assert user2.profile.profile_pic.url in data['profile_pic']
     assert data['gender'] == user2.profile.gender.gender_name
     assert len(data['todo']['results']) == user2.todos.filter(public=True).count()
-    assert data['username'] == 'permission denied'
+    assert user.username not in data
     assert response.status_code == 200
+
 
 @pytest.mark.django_db
 def test_patch_method_not_authenticated(api_client, user):
@@ -50,6 +51,7 @@ def test_patch_method_not_authenticated(api_client, user):
     user.refresh_from_db()
     assert response.status_code == 401
     assert user.profile.name != data['name']
+
 
 @pytest.mark.django_db
 def test_patch_method_auth(api_client, user):
@@ -70,12 +72,12 @@ def test_patch_method_auth_not_owner(api_client, user):
     assert response.status_code == 403
 
 
-
 @pytest.mark.django_db
 def test_delete_method_not_authenticated(api_client, user):
     response = api_client.delete(reverse("profile-detail", args=[user.profile.id]))
     assert response.status_code == 405
     assert 'u cant delete account this way' == response.data['detail']
+
 
 @pytest.mark.django_db
 def test_delete_method_auth_not_owner(api_client, user):
@@ -117,23 +119,8 @@ def test_get_profile_thought_logged(api_client, user):
     assert user.profile.profile_pic.url in data['profile_pic']
     assert data['gender'] == user.profile.gender.gender_name
     assert len(data['todo']['results']) == user.todos.filter((Q(public=True) | Q(created_by=user))).count()
-    assert data['username'] == user.username
+    assert user.username not in data
     assert response.status_code == 200
-
-@pytest.mark.django_db
-def test_get_profile_list_not_authenticated(api_client, user):
-    response = api_client.get(reverse("profile-list"))
-    data = response.data
-    assert data['results'][0]['username'] == 'permission denied'
-
-
-@pytest.mark.django_db
-def test_get_profile_list_authenticated(api_client, user):
-    api_client.force_login(user)
-    response = api_client.get(reverse("profile-list"))
-    data = response.data
-    assert data['results'][0]['username'] == 'test0'
-
 
 
 @pytest.mark.django_db
@@ -150,6 +137,7 @@ def test_generate_token_token_already_exist(api_client, user):
     assert response.status_code == 200
     assert user.auth_token.key == response.data['token']
 
+
 @pytest.mark.django_db
 def test_generate_token_token(api_client, user2):
     api_client.force_login(user2)
@@ -157,11 +145,13 @@ def test_generate_token_token(api_client, user2):
     assert response.status_code == 200
     assert user2.auth_token.key == response.data['token']
 
+
 @pytest.mark.django_db
 def test_create_method_not_authenticated(api_client, user):
     response = api_client.post(reverse("profile-detail", args=[user.profile.id]))
     assert response.status_code == 405
     assert 'Method "POST" not allowed.' == response.data['detail']
+
 
 @pytest.mark.django_db
 def test_create_method_auth_not_owner(api_client, user):
