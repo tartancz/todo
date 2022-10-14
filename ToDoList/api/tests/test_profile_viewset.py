@@ -44,54 +44,64 @@ def test_get_profile_auth_not_owner(api_client, user):
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
-def test_patch_method_not_authenticated(api_client, user):
-    data = {'name': 'rename_test'}
-    response = api_client.patch(reverse("profile-detail", args=[user.profile.id]), data=data)
-    user.refresh_from_db()
-    assert response.status_code == 401
-    assert user.profile.name != data['name']
+# @pytest.mark.django_db
+# def test_patch_method_not_authenticated(api_client, user):
+#     data = {'name': 'rename_test'}
+#     response = api_client.patch(reverse("profile-detail", args=[user.profile.id]), data=data)
+#     user.refresh_from_db()
+#     assert response.status_code == 401
+#     assert user.profile.name != data['name']
 
 
-@pytest.mark.django_db
-def test_patch_method_auth(api_client, user):
-    api_client.force_login(user)
-    data = {'name': 'rename_test'}
-    response = api_client.patch(reverse("profile-detail", args=[user.profile.id]), data=data)
-    user.refresh_from_db()
-    assert response.data['name'] == data['name']
-    assert response.status_code == 200
-    assert user.profile.name == data['name']
+# @pytest.mark.django_db
+# def test_patch_method_auth(api_client, user):
+#     api_client.force_login(user)
+#     data = {'name': 'rename_test'}
+#     response = api_client.patch(reverse("profile-detail", args=[user.profile.id]), data=data)
+#     user.refresh_from_db()
+#     assert response.data['name'] == data['name']
+#     assert response.status_code == 200
+#     assert user.profile.name == data['name']
 
 
-@pytest.mark.django_db
-def test_patch_method_auth_not_owner(api_client, user):
-    api_client.force_login(user)
-    data = {'name': 'rename_test'}
-    response = api_client.patch(reverse("profile-detail", args=[2]), data=data)
-    assert response.status_code == 403
+# @pytest.mark.django_db
+# def test_patch_method_auth_not_owner(api_client, user):
+#     api_client.force_login(user)
+#     data = {'name': 'rename_test'}
+#     response = api_client.patch(reverse("profile-detail", args=[2]), data=data)
+#     assert response.status_code == 403
 
+# @pytest.mark.django_db
+# def test_delete_method_not_authenticated(api_client, user):
+#     response = api_client.delete(reverse("profile-detail", args=[user.profile.id]))
+#     assert response.status_code == 405
+#     assert 'u cant delete account this way' == response.data['detail']
 
-@pytest.mark.django_db
-def test_delete_method_not_authenticated(api_client, user):
-    response = api_client.delete(reverse("profile-detail", args=[user.profile.id]))
-    assert response.status_code == 405
-    assert 'u cant delete account this way' == response.data['detail']
+# @pytest.mark.django_db
+# def test_delete_method_not_authenticated(api_client, user):
+#     response = api_client.delete(reverse("profile-detail", args=[user.profile.id]))
+#     assert response.status_code == 405
+#     assert 'u cant delete account this way' == response.data['detail']
 
+# @pytest.mark.django_db
+# def test_delete_method_auth_not_owner(api_client, user):
+#     response = api_client.delete(reverse("profile-detail", args=[2]))
+#     assert response.status_code == 405
+#     assert 'u cant delete account this way' == response.data['detail']
 
-@pytest.mark.django_db
-def test_delete_method_auth_not_owner(api_client, user):
-    response = api_client.delete(reverse("profile-detail", args=[2]))
-    assert response.status_code == 405
-    assert 'u cant delete account this way' == response.data['detail']
-
-
-@pytest.mark.django_db
-def test_delete_method(api_client, user):
-    api_client.force_login(user)
-    response = api_client.delete(reverse("profile-detail", args=[user.profile.id]))
-    assert response.status_code == 405
-    assert 'u cant delete account this way' == response.data['detail']
+# @pytest.mark.django_db
+# def test_delete_method_auth_not_owner(api_client, user):
+#     response = api_client.delete(reverse("profile-detail", args=[2]))
+#     assert response.status_code == 405
+#     assert 'u cant delete account this way' == response.data['detail']
+#
+#
+# @pytest.mark.django_db
+# def test_delete_method(api_client, user):
+#     api_client.force_login(user)
+#     response = api_client.delete(reverse("profile-detail", args=[user.profile.id]))
+#     assert response.status_code == 405
+#     assert 'u cant delete account this way' == response.data['detail']
 
 
 @pytest.mark.django_db
