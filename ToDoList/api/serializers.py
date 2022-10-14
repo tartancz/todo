@@ -96,11 +96,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def to_do_list(self, instance):
         request = self.context.get('request')
-        user = request.user
-        if user.is_authenticated:
-            queryset = ToDo.objects.filter((Q(public=True) | Q(created_by=user)) & Q(created_by=instance.user))
-        else:
-            queryset = ToDo.objects.filter(Q(public=True) & Q(created_by=instance.user))
+        queryset = ToDo.objects.filter(Q(public=True) & Q(created_by=instance.user))
 
         return get_paginated_nested_serializer(request, NestedTodoInProfile, queryset)
 
