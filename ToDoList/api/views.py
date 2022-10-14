@@ -39,7 +39,7 @@ class ProfileViewSet(mixins.RetrieveModelMixin,
             user.delete()
             return Response({'info': f'account {user.username} was deleted'}, status=HTTP_200_OK)
         else:
-            return Response(ProfileSerializer(instance=user.profile, context={'request': self.request}).data)
+            return Response(ProfileSerializerOwner(instance=user.profile, context={'request': self.request}).data)
 
     @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
     def generate_token(self, request, *args, **kwargs):
