@@ -25,18 +25,12 @@ from .serializers import (
 
 class ProfileViewSet(mixins.RetrieveModelMixin,
                      mixins.DestroyModelMixin,
-                     mixins.UpdateModelMixin,
-                     mixins.ListModelMixin,
                      GenericViewSet
                      ):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
     permission_classes = [IsOwnerOrReadOnlyProfile]
     pagination_class = StandardResultsSetPagination
-
-
-    def destroy(self, request, *args, **kwargs):
-        return Response({'detail': f'u cant delete account this way'}, status=HTTP_405_METHOD_NOT_ALLOWED)
 
     @action(detail=False, methods=['get', 'delete'], permission_classes=[IsAuthenticated])
     def logged(self, request, *args, **kwargs):
