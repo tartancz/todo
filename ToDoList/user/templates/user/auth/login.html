@@ -1,0 +1,17 @@
+{% extends 'user/auth/user_auth_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block head %}
+<title>login</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Login</h1>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit">
+    </form>
+
+{% endblock %}

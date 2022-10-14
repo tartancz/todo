@@ -1,0 +1,16 @@
+[
+  {
+    "model": "user.gender" ,
+    "pk": 1 ,
+    "fields": {
+      "gender_name": "Male"
+    }
+  } ,
+  {
+    "model": "user.gender" ,
+    "pk": 2 ,
+    "fields": {
+      "gender_name": "Female"
+    }
+  }
+]

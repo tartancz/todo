@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block nav %}
+<li class="nav-option-item"><a href="{% url 'profile' user.profile.id %}" class="nav-option-link">Profile</a></li>
+<li class="nav-option-item"><a href="{% url 'profile-update' %}" class="nav-option-link">Update Profile</a></li>
+<li class="nav-option-item"><a href="{% url 'change-password' %}" class="nav-option-link">Change Password</a></li>
+<li class="nav-option-item"><a href="{% url 'profile-delete' %}" class="nav-option-link">Delete Profile</a></li>
+<li class="nav-option-item"><a href="{% url 'logout' %}" class="nav-option-link">Logout</a></li>
+{% endblock %}

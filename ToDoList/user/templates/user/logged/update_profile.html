@@ -1,0 +1,18 @@
+{% extends 'user/logged/user_logged_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block head %}
+<title>Update</title>
+{% endblock %}
+
+{% block content %}
+    <h2>Update Profile</h2>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ user_form|crispy }}
+        {{ profile_form|crispy }}
+        <input type="submit">
+    </form>
+
+{% endblock %}

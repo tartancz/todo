@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="script" href="{% static 'script.js' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+    <nav>
+
+        <div class="nav-menu-container">
+            <a class="title" href="{% url 'todo:index' %}">ToDoList</a>
+            <ul class="nav-list">
+                {% if user.is_authenticated %}
+                    <li class="nav-item"><a href="{% url 'profile' user.profile.id %}" class="nav-item-link">{{ user.profile.name }}</a></li>
+                {% else %}
+                    <li class="nav-item"><a href="{% url 'register' %}" class="nav-item-link">Account</a></li>
+                {% endif %}
+
+                <li class="nav-item"><a href="{% url 'todo:index' %}" class="nav-item-link">Home</a></li>
+                <li class="nav-item"><a href="{% url 'api-root' %}" class="nav-item-link">API</a></li>
+                <li class="nav-item"><a href="https://www.github.com/tartancz/todo" class="nav-item-link">GITHUB</a></li> {# pak doplnit link na github #}
+            </ul>
+        </div>
+    </nav>
+    <div class="wrapper-content">
+        <div class="content">
+            <div class="main-section">
+                {% block content %}
+
+                {% endblock %}
+            </div>
+            <div class="nav-aside">
+                <ul class="nav-options-list">
+                    {% block nav %}
+
+                    {% endblock %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'script.js' %}"></script>
+
+</body>
+</html>

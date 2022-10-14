@@ -1,0 +1,64 @@
+{% extends 'todo/todo_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'todo/style-todo.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="todo">
+            <div class="todo-profile">
+                <img class="todo-profile-pic" src="{{ obj.created_by.profile.profile_pic.url }}" alt="">
+                <div class="todo-title-wrapper">
+                    <h1><span>Created by: <a href="{% url 'profile' obj.created_by.id %}">{{ obj.created_by.profile.name}}</a></span> </h1>
+                    <p><span>Created on: </span> {{ obj.created_on|date:"F d, Y" }}</p>
+                </div>
+            </div>
+            <div class="todo-description">
+                <h2 class="todo-title">{{ obj.title }}</h2>
+                <p class="todo-description">{{ obj.description }}</p>
+            </div>
+            <div class="todo-information">
+                <p class="done-information">Is it done:
+                {% if obj.completed %}
+                    <img src="{% static 'todo-status/Done.png' %}" alt="">
+                {% else %}
+                    <img src="{% static 'todo-status/Not Done.png' %}" alt="">
+                    {% if user == obj.created_by %}
+                        <a href="{% url 'todo:todo-done' obj.pk %}" class="button-done">IS IT DONE</a>
+                    {% endif %}
+                {% endif %} </p>
+                <p>DEADLINE IS:
+                    {% if obj.dead_line %}
+                        {{ obj.dead_line }}
+                    {% else %}
+                        Not set
+                    {% endif %}
+                </p>
+            </div>
+    </div>
+    <h2>Comments</h2>
+    <div class="comment-form">
+    {% if user.is_authenticated %}
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ comment_form|crispy }}
+            <input type="submit">
+        </form>
+    {% endif %}
+    </div>
+    {% for comment in obj.comments_in.iterator %}
+        <div class="comment">
+            <div class="comment-title">
+                <img class="comment-profile-pic" src="{{ comment.created_by.profile.profile_pic.url }}" alt="">
+                <div class="comment-wrapper">
+                    <a href="{% url 'profile' comment.created_by.pk %}"><h3>{{ comment.created_by.profile.name }}</h3></a>
+                    <p>Commented on: {{ comment.created_on|date:"F d, Y"  }}</p>
+                </div>
+            </div>
+            <p class="comment-text">{{ comment.text }}</p>
+        </div>
+    {% empty %}
+        <p>Pretty empty here :]</p>
+    {% endfor %}
+{% endblock %}

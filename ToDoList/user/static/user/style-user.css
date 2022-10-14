@@ -1,0 +1,82 @@
+.todo{
+    max-width: 700px;
+    background: cadetblue;
+    border-radius: 20px;
+    padding: 5px;
+    margin-bottom: 15px;
+    display: inline-table;
+    width: 75%;
+}
+
+.todo-profile{
+    display: flex;
+    background: aqua;
+    border-radius:  10px;
+    padding-bottom: 10px;
+    width: 85%;
+    max-width: 1000px;
+    margin-bottom: 20px;
+}
+
+.todo-title-wrapper{
+    display: block;
+}
+
+.todo-profile-pic{
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    margin: 5px;
+}
+
+.todo-description{
+    background: aquamarine;
+}
+
+.link-todo{
+    color: black;
+    text-underline-mode: None;
+    width: 100%;
+}
+
+.done-information{
+
+}
+
+.button-done{
+    margin-left: 100px;
+    background: forestgreen;
+    color: black;
+    padding: 20px 30px 20px 30px;
+    border-radius: 10px;
+}
+
+.comment{
+    background: forestgreen;
+    max-width: 700px;
+    width: 75%;
+    border-radius: 20px;
+    padding: 5px;
+    margin-top: 15px;
+}
+
+.comment-profile-pic{
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+}
+
+.comment-title{
+    display: flex;
+}
+
+.comment-text{
+    background: cadetblue;
+    padding: 5px;
+    border-radius: 5px;
+
+}
+
+.profile-name{
+    font-size: 80px;
+}

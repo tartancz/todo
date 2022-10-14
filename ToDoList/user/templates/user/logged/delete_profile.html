@@ -1,0 +1,20 @@
+{% extends 'user/logged/user_logged_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block head %}
+<title>Register</title>
+{% endblock %}
+
+{% block content %}
+    <h2>Delete Profile</h2>
+    <p>Are u sure u want delete Profile?</p>
+    <p>To delete this profile write this number:</p>
+    <h3>{{ random }}</h3>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="text" required name="number">
+        <input type="submit" value="DELETE">
+    </form>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'todo/todo_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h2>Create View</h2>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit">
+    </form>
+{% endblock %}

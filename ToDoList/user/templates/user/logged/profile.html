@@ -1,0 +1,35 @@
+{% extends base %}
+
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'user/style-user.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="todo-profile">
+    <img class="todo-profile-pic" src="{{ profile.profile_pic.url }}" alt="">
+    <div class="information-wrapper">
+        <h1 class="profile-name">{{ profile.name }}</h1>
+        <p>gender: {{ profile.gender }}</p>
+    </div>
+</div>
+    {% for obj in todos %}
+        <a class="link-todo" href="{% url 'todo:detail-view' obj.pk %}">
+            <div class="todo">
+            <p>Created on: {{ obj.created_on|date:"F d, Y" }}</p>
+                <div class="todo-description">
+                    <h2 class="todo-title">{{ obj.title }}</h2>
+                    <p class="todo-description">{{ obj.description }}</p>
+                </div>
+                <div class="todo-information">
+                    <p>Is it done:
+                    {% if obj.completed %}
+                        <img src="{% static 'todo-status/Done.png' %}" alt="">
+                    {% else %}
+                        <img src="{% static 'todo-status/Not Done.png' %}" alt="">
+                    {% endif %} </p>
+                </div>
+            </div>
+         </a>
+    {% endfor %}
+{% endblock %}
