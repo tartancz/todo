@@ -21,25 +21,44 @@ from .serializers import (
     CommentSerializer,
     ToDoSerializer,
 )
-
-
 class ProfileViewSet(mixins.RetrieveModelMixin,
                      mixins.ListModelMixin,
+                     mixins.UpdateModelMixin,
                      GenericViewSet
                      ):
-    serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
     permission_classes = [IsOwnerOrReadOnlyProfile]
     pagination_class = StandardResultsSetPagination
 
-    @action(detail=False, methods=['get', 'delete'], permission_classes=[IsAuthenticated])
+    def get_serializer_class(self):
+        if self.action == 'logged':
+            return ProfileSerializerOwner
+        else:
+            return ProfileSerializer
+
+    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
     def logged(self, request, *args, **kwargs):
         user = request.user
-        if request.method == 'DELETE':
-            user.delete()
-            return Response({'info': f'account {user.username} was deleted'}, status=HTTP_200_OK)
+        return Response(ProfileSerializerOwner(instance=user.profile, context={'request': self.request}).data)
+
+
+    @logged.mapping.patch
+    def logged_patch(self, request, *args, **kwargs):
+
+        user = request.user
+        ser = ProfileSerializerOwner(data=request.data, instance=user.profile, context={'request': self.request},
+                                     partial=True)
+        if ser.is_valid():
+            ser.save()
+            return Response(ser.data, status=200)
         else:
-            return Response(ProfileSerializerOwner(instance=user.profile, context={'request': self.request}).data)
+            return Response({'detail': 'bad request'}, status=400)
+
+    @logged.mapping.delete
+    def logged_delete(self, request, *args, **kwargs):
+        user = request.user
+        user.delete()
+        return Response({'info': f'account {user.username} was deleted'}, status=HTTP_200_OK)
 
     @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
     def generate_token(self, request, *args, **kwargs):
