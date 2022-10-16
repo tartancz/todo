@@ -76,7 +76,7 @@ def test_get_detail_todo_authenticated(api_client, user):
 @pytest.mark.django_db
 def test_get_detail_todo_authenticated_not_owner_private(api_client, user):
     api_client.force_login(user)
-    response = api_client.get(reverse("todo-detail", args=[3]))
+    response = api_client.get(reverse("todo-detail", args=[8]))
 
     assert response.status_code == 404
 
@@ -108,10 +108,10 @@ def test_delete_detail_todo_authenticated_not_owner(api_client, user):
 @pytest.mark.django_db
 def test_delete_detail_todo_authenticated_private(api_client, user):
     api_client.force_login(user)
-    response = api_client.delete(reverse("todo-detail", args=[3]))
+    response = api_client.delete(reverse("todo-detail", args=[8]))
 
     assert response.status_code == 404
-    assert ToDo.objects.filter(pk=3).count() == 1
+    assert ToDo.objects.filter(pk=4).count() == 1
 
 ##########
 
@@ -139,7 +139,7 @@ def test_post_comment_action_todo_authenticated_private_not_owner(api_client, us
         'text':'test_text'
     }
     api_client.force_login(user)
-    response = api_client.post(reverse('todo-comment', args=[3]), data=data)
+    response = api_client.post(reverse('todo-comment', args=[8]), data=data)
     assert response.status_code == 404
 
 @pytest.mark.django_db
