@@ -5,9 +5,8 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import (
-    HTTP_405_METHOD_NOT_ALLOWED,
     HTTP_200_OK,
-    HTTP_400_BAD_REQUEST
+    HTTP_400_BAD_REQUEST,
 )
 from rest_framework.viewsets import GenericViewSet
 
@@ -23,7 +22,6 @@ from .serializers import (
 )
 class ProfileViewSet(mixins.RetrieveModelMixin,
                      mixins.ListModelMixin,
-                     mixins.UpdateModelMixin,
                      GenericViewSet
                      ):
     queryset = Profile.objects.all()
