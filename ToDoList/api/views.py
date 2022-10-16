@@ -13,7 +13,7 @@ from rest_framework.viewsets import GenericViewSet
 from todo.models import ToDo
 from user.models import Profile
 from .pagination import StandardResultsSetPagination
-from .permissions import IsOwnerOrReadOnlyToDO, IsOwnerOrReadOnlyProfile
+from .permissions import IsOwnerOrReadOnlyToDO
 from .serializers import (
     ProfileSerializer,
     ProfileSerializerOwner,
@@ -25,7 +25,6 @@ class ProfileViewSet(mixins.RetrieveModelMixin,
                      GenericViewSet
                      ):
     queryset = Profile.objects.all()
-    permission_classes = [IsOwnerOrReadOnlyProfile]
     pagination_class = StandardResultsSetPagination
 
     def get_serializer_class(self):
