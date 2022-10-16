@@ -28,22 +28,23 @@ class ProfileViewSet(mixins.RetrieveModelMixin,
     pagination_class = StandardResultsSetPagination
 
     def get_serializer_class(self):
-        if self.action == 'logged':
+        if 'logged' in self.action:
             return ProfileSerializerOwner
         else:
             return ProfileSerializer
 
-    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
+    @action(detail=False, permission_classes=[IsAuthenticated])
     def logged(self, request, *args, **kwargs):
+        ser_class = self.get_serializer_class()
         user = request.user
-        return Response(ProfileSerializerOwner(instance=user.profile, context={'request': self.request}).data)
+        return Response(ser_class(instance=user.profile, context={'request': self.request}).data)
 
 
     @logged.mapping.patch
     def logged_patch(self, request, *args, **kwargs):
-
+        ser_class = self.get_serializer_class()
         user = request.user
-        ser = ProfileSerializerOwner(data=request.data, instance=user.profile, context={'request': self.request},
+        ser = ser_class(data=request.data, instance=user.profile, context={'request': self.request},
                                      partial=True)
         if ser.is_valid():
             ser.save()
