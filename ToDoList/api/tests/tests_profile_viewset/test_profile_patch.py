@@ -43,3 +43,12 @@ def test_patch_list_action_logged_profile_authenticated(api_client, user):
     user.refresh_from_db()
     assert response.status_code == 200
     assert user.profile.name == data['name']
+
+
+@pytest.mark.django_db
+def test_patch_list_action_logged_profile_authenticated_bad_request(api_client, user, rf):
+    api_client.force_login(user)
+    over_150_char='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+    data = {'name':over_150_char}
+    response = api_client.patch(reverse("profile-logged"), data=data)
+    assert response.status_code == 400
