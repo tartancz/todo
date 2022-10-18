@@ -2,6 +2,7 @@ import pytest
 from rest_framework.reverse import reverse
 from django.db.models import Q
 from django.contrib.auth.models import User
+from user.models import Gender
 
 
 
@@ -38,11 +39,14 @@ def test_patch_list_action_logged_profile_not_authenticated(api_client, user):
 @pytest.mark.django_db
 def test_patch_list_action_logged_profile_authenticated(api_client, user):
     api_client.force_login(user)
-    data = {'name': 'rename_test'}
+    data = {'name': 'rename_test',
+            'gender': 5
+            }
     response = api_client.patch(reverse("profile-logged"), data=data)
     user.refresh_from_db()
     assert response.status_code == 200
     assert user.profile.name == data['name']
+    assert user.profile.gender == Gender.objects.get(pk=data['gender'])
 
 
 @pytest.mark.django_db
