@@ -132,6 +132,17 @@ class ToDoViewSet(mixins.CreateModelMixin,
             return Response(comment.data)
         return Response({'detail': 'Bad request'}, status=HTTP_400_BAD_REQUEST)
 
+    @action(detail=True, methods=['patch'], permission_classes=[IsOwnerOrReadOnlyToDO])
+    def done(self, request, *args, **kwargs):
+        '''
+        mark todo as completed
+        '''
+        todo = self.get_object()
+        todo.completed = True
+        todo.save()
+        ser = self.get_serializer_class()
+        return Response(ser(instance=todo, context={'request':self.request}).data)
+
     def get_queryset(self):
         user = self.request.user
         if user.is_authenticated:
