@@ -98,6 +98,16 @@ class ToDoViewSet(mixins.CreateModelMixin,
                   mixins.ListModelMixin,
                   GenericViewSet
                   ):
+
+    '''
+    For model ToDo
+
+    In detail can be used pagination for comments (example: ?page_size=5&page=2)
+
+    ACTION:
+    Generate token -> will generate token to use api
+    Logged -> access to your profile
+    '''
     serializer_class = ToDoSerializer
     permission_classes = [
         IsAuthenticatedOrReadOnly,
@@ -112,6 +122,9 @@ class ToDoViewSet(mixins.CreateModelMixin,
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticatedOrReadOnly])
     def comment(self, request, *args, **kwargs):
+        '''
+        will add comment
+        '''
         comment = CommentSerializer(data=request.data, context={'request': request})
         if comment.is_valid():
             todo = self.get_object()
