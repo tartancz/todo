@@ -24,6 +24,17 @@ class ProfileViewSet(mixins.RetrieveModelMixin,
                      mixins.ListModelMixin,
                      GenericViewSet
                      ):
+    '''
+    For model Profile
+
+    Cant acces your private information nor update it from here,you must use action logged to do it.
+
+    In detail can be used pagination for todos (example: ?page_size=5&page=2)
+
+    ACTION:
+    Generate token -> will generate token to use api
+    Logged -> access to your profile
+    '''
     queryset = Profile.objects.all()
     pagination_class = StandardResultsSetPagination
 
@@ -35,6 +46,13 @@ class ProfileViewSet(mixins.RetrieveModelMixin,
 
     @action(detail=False, permission_classes=[IsAuthenticated])
     def logged(self, request, *args, **kwargs):
+        '''
+        For model Profile in u are logged
+
+        Here u can use method PATCH to modifies fields: name, gender
+
+        with Method DELETE u can delete your profile
+        '''
         ser_class = self.get_serializer_class()
         user = request.user
         return Response(ser_class(instance=user.profile, context={'request': self.request}).data)
@@ -60,6 +78,13 @@ class ProfileViewSet(mixins.RetrieveModelMixin,
 
     @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
     def generate_token(self, request, *args, **kwargs):
+        '''
+        will generate your sercet key to use.
+
+        REMEMBER THIS TOKEN, CUZ U CANT ACCES HIM ANYMORE, only generate new
+
+        Request auth must look like this "Token f02b72e39fef297e3d56c57441cf9f315e5d7587"
+        '''
         user = request.user
         if hasattr(user, 'auth_token'):
             user.auth_token.delete()
