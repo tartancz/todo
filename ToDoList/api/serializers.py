@@ -4,7 +4,8 @@ from rest_framework.reverse import reverse
 
 from api.utils import get_paginated_nested_serializer
 from todo.models import ToDo, Comment
-from user.models import Profile
+from user.models import Profile, Gender
+from .custom_fields import ShowFieldChangeSlugFieldRelatedField
 
 
 class NestedProfileSerializerInComment(serializers.ModelSerializer):
@@ -110,6 +111,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializerOwner(ProfileSerializer):
+    gender = ShowFieldChangeSlugFieldRelatedField(slug_field='pk', queryset=Gender.objects.all())
     username = serializers.ReadOnlyField(source='user.username')
     email = serializers.ReadOnlyField(source='user.email')
 
