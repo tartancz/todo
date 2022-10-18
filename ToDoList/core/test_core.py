@@ -7,7 +7,8 @@ def test_get_env_setted_env(monkeypatch):
     assert get_env('setted_env') == './static'
 
 def test_get_env_not_setted_env(monkeypatch):
-    monkeypatch.delenv('not_setted_env')
+    if os.getenv('not_setted_env'):
+        monkeypatch.delenv('not_setted_env')
     from django.core.exceptions import ImproperlyConfigured
     with pytest.raises(ImproperlyConfigured):
         get_env('not_setted_env')
