@@ -37,28 +37,31 @@
                 </p>
             </div>
     </div>
-    <h2>Comments</h2>
-    <div class="comment-form">
-    {% if user.is_authenticated %}
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ comment_form|crispy }}
-            <input type="submit">
-        </form>
-    {% endif %}
-    </div>
-    {% for comment in obj.comments_in.iterator %}
-        <div class="comment">
-            <div class="comment-title">
-                <img class="comment-profile-pic" src="{{ comment.created_by.profile.profile_pic.url }}" alt="">
-                <div class="comment-wrapper">
-                    <a href="{% url 'profile' comment.created_by.pk %}"><h3>{{ comment.created_by.profile.name }}</h3></a>
-                    <p>Commented on: {{ comment.created_on|date:"F d, Y"  }}</p>
-                </div>
-            </div>
-            <p class="comment-text">{{ comment.text }}</p>
+    <div id="comment-section">
+        <h2>Comments</h2>
+        <div class="comment-form">
+        {% if user.is_authenticated %}
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ comment_form|crispy }}
+                <input type="submit">
+            </form>
+        {% endif %}
         </div>
-    {% empty %}
-        <p>Pretty empty here :]</p>
-    {% endfor %}
+        {% for comment in comments %}
+            <div class="comment">
+                <div class="comment-title">
+                    <img class="comment-profile-pic" src="{{ comment.created_by.profile.profile_pic.url }}" alt="">
+                    <div class="comment-wrapper">
+                        <a href="{% url 'profile' comment.created_by.pk %}"><h3>{{ comment.created_by.profile.name }}</h3></a>
+                        <p>Commented on: {{ comment.created_on|date:"F d, Y"  }}</p>
+                    </div>
+                </div>
+                <p class="comment-text">{{ comment.text }}</p>
+            </div>
+        {% empty %}
+            <p>Pretty empty here :]</p>
+        {% endfor %}
+    </div>
+    <script src="{% static 'todo/script.js' %}"></script>
 {% endblock %}

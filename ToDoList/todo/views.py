@@ -45,6 +45,8 @@ def todo_detail_view(request, pk):
     if request.method == "GET":
         context = {}
         context["obj"] = todo
+
+        context['comments'] = todo.comments_in.all()[:10]
         context["comment_form"] = comment_form
         return render(request, template_name="todo/detail_view.html", context=context)
     elif request.method == "POST":
@@ -56,9 +58,6 @@ def todo_detail_view(request, pk):
             return HttpResponseRedirect(reverse("todo:detail-view", args=[pk]))
         else:
             return redirect_to_login(reverse("todo:detail-view", args=[pk]))
-
-
-
 
 
 def todo_done(request, pk):
