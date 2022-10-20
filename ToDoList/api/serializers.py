@@ -27,8 +27,10 @@ class NestedProfileSerializerInComment(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    created_on = serializers.ReadOnlyField(read_only=True)
-    created_by = NestedProfileSerializerInComment(source='created_by.profile', read_only=True)
+    created_on = serializers.DateTimeField("%B %d, %Y", read_only=True)
+    created_by = NestedProfileSerializerInComment(
+        source="created_by.profile", read_only=True
+    )
 
     class Meta:
         model = Comment
