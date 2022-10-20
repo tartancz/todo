@@ -4,6 +4,7 @@ from rest_framework.serializers import SlugRelatedField
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import smart_str
 
+
 class ShowFieldChangeSlugFieldRelatedField(SlugRelatedField):
     """
     A read-write field that represents the target of the relationship

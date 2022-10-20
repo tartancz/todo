@@ -68,15 +68,17 @@ class ProfileView(DetailView):
         context = super(ProfileView, self).get_context_data(**kwargs)
         # BASE
         if self.request.user.is_authenticated:
-            context['base'] = 'user/logged/user_logged_base.html'
+            context["base"] = "user/logged/user_logged_base.html"
         else:
-            context['base'] = 'user/auth/user_auth_base.html'
+            context["base"] = "user/auth/user_auth_base.html"
         # TODOS LIST
         todo_owner = self.get_object().user
         if self.request.user == todo_owner:
-            context['todos'] = ToDo.objects.filter(created_by_id=self.kwargs['pk'])
+            context["todos"] = ToDo.objects.filter(created_by_id=self.kwargs["pk"])
         else:
-            context['todos'] = ToDo.objects.filter(Q(created_by_id=self.kwargs['pk']) & Q(public=True))
+            context["todos"] = ToDo.objects.filter(
+                Q(created_by_id=self.kwargs["pk"]) & Q(public=True)
+            )
         return context
 
 

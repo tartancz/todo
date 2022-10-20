@@ -5,14 +5,15 @@ from django.contrib.auth.models import User
 from todo.models import ToDo
 
 
-#test_method_list/detail_ACTION_NAMEOFACTION_model_auth_extrainfo
+# test_method_list/detail_ACTION_NAMEOFACTION_model_auth_extrainfo
+
 
 @pytest.mark.django_db
 def test_get_list_todo_not_authenticated(api_client, user):
     response = api_client.get(reverse("todo-list"))
     data = response.data
     assert response.status_code == 200
-    assert data['count'] == ToDo.objects.filter(public=True).count()
+    assert data["count"] == ToDo.objects.filter(public=True).count()
 
 
 @pytest.mark.django_db
@@ -21,7 +22,11 @@ def test_get_list_todo_authenticated(api_client, user2):
     response = api_client.get(reverse("todo-list"))
     data = response.data
     assert response.status_code == 200
-    assert data['count'] == ToDo.objects.filter(Q(public=True) | Q(created_by=user2)).count()
+    assert (
+        data["count"]
+        == ToDo.objects.filter(Q(public=True) | Q(created_by=user2)).count()
+    )
+
 
 @pytest.mark.django_db
 def test_get_detail_todo_not_authenticated(api_client, user):
@@ -29,8 +34,8 @@ def test_get_detail_todo_not_authenticated(api_client, user):
     data = response.data
     todo = ToDo.objects.get(pk=98)
     assert response.status_code == 200
-    assert data['title'] == todo.title
-    assert data['comments']['count'] == todo.comments_in.count()
+    assert data["title"] == todo.title
+    assert data["comments"]["count"] == todo.comments_in.count()
 
 
 @pytest.mark.django_db
@@ -40,8 +45,9 @@ def test_get_detail_todo_authenticated(api_client, user):
     data = response.data
     todo = ToDo.objects.get(pk=98)
     assert response.status_code == 200
-    assert data['title'] == todo.title
-    assert data['comments']['count'] == todo.comments_in.count()
+    assert data["title"] == todo.title
+    assert data["comments"]["count"] == todo.comments_in.count()
+
 
 @pytest.mark.django_db
 def test_get_detail_todo_authenticated_not_owner_private(api_client, user):

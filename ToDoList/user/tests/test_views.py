@@ -80,6 +80,7 @@ def test_update_profile(user, client, email, name, gender):
     assert user.profile.gender.id == gender
     assert response_get.status_code == 200
 
+
 @pytest.mark.parametrize(
     "email, name, gender",
     [
@@ -96,8 +97,6 @@ def test_bad_data_profile_profile(user, client, email, name, gender):
     client.force_login(user)
     response = client.post(reverse("profile-update"), data=data)
     assert response.status_code == 400
-
-
 
 
 @pytest.mark.django_db
@@ -124,34 +123,35 @@ def test_delete_user(user, client):
 
 
 def test_login_required(client):
-    response = client.get(reverse('profile-update'))
+    response = client.get(reverse("profile-update"))
     assert response.status_code == 302
-    assert reverse('login') in response.url
-    response = client.get(reverse('profile-delete'))
+    assert reverse("login") in response.url
+    response = client.get(reverse("profile-delete"))
     assert response.status_code == 302
-    assert reverse('login') in response.url
+    assert reverse("login") in response.url
+
 
 @pytest.mark.django_db
 def test_profile_view(user, rf, client):
-    response = client.get(reverse('profile', args=[user.pk]))
-    assert response.context['base'] == 'user/auth/user_auth_base.html'
+    response = client.get(reverse("profile", args=[user.pk]))
+    assert response.context["base"] == "user/auth/user_auth_base.html"
     todos = ToDo.objects.filter(Q(created_by=user) & Q(public=True))
-    pytest_django.asserts.assertQuerysetEqual(response.context['todos'], todos)
+    pytest_django.asserts.assertQuerysetEqual(response.context["todos"], todos)
 
 
 @pytest.mark.django_db
 def test_profile_view_auth_owner(user, rf, client):
     client.force_login(user)
-    response = client.get(reverse('profile', args=[user.pk]))
-    assert response.context['base'] == 'user/logged/user_logged_base.html'
+    response = client.get(reverse("profile", args=[user.pk]))
+    assert response.context["base"] == "user/logged/user_logged_base.html"
     todos = ToDo.objects.filter(created_by=user)
-    pytest_django.asserts.assertQuerysetEqual(response.context['todos'], todos)
+    pytest_django.asserts.assertQuerysetEqual(response.context["todos"], todos)
 
 
 @pytest.mark.django_db
 def test_profile_view_auth_not_owner(user, user2, rf, client):
     client.force_login(user2)
-    response = client.get(reverse('profile', args=[user.pk]))
-    assert response.context['base'] == 'user/logged/user_logged_base.html'
+    response = client.get(reverse("profile", args=[user.pk]))
+    assert response.context["base"] == "user/logged/user_logged_base.html"
     todos = ToDo.objects.filter(Q(created_by=user) & Q(public=True))
-    pytest_django.asserts.assertQuerysetEqual(response.context['todos'], todos)
+    pytest_django.asserts.assertQuerysetEqual(response.context["todos"], todos)

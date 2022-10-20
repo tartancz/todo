@@ -5,13 +5,11 @@ from django.contrib.auth.models import User
 from todo.models import ToDo
 
 
-
 @pytest.mark.django_db
 def test_delete_detail_todo_not_authenticated(api_client, user):
     response = api_client.delete(reverse("todo-detail", args=[98]))
     assert response.status_code == 401
-    assert response.data['detail'] == 'Authentication credentials were not provided.'
-
+    assert response.data["detail"] == "Authentication credentials were not provided."
 
 
 @pytest.mark.django_db
@@ -30,6 +28,7 @@ def test_delete_detail_todo_authenticated_not_owner(api_client, user):
 
     assert response.status_code == 403
     assert ToDo.objects.filter(pk=3).count() == 1
+
 
 @pytest.mark.django_db
 def test_delete_detail_todo_authenticated_private(api_client, user):

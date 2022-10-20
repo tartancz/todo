@@ -8,9 +8,9 @@ from .models import Profile
 
 @receiver(post_save, sender=User)
 def admin_profile_creation_(sender, instance, created, **kwargs):
-    '''
+    """
     if user is created by createsuperuser then it will create instance of profile
-    '''
+    """
     if created:
         if instance.is_superuser:
-            Profile.objects.create(name='admin', user=instance).save()
+            Profile.objects.create(name="admin", user=instance).save()

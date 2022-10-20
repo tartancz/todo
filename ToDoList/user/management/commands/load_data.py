@@ -8,4 +8,3 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         management.call_command("loaddata", "user/management/data.json")
-

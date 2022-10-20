@@ -30,7 +30,6 @@ def get_paginated_nested_serializer(
         else:
             return {"detail": f"{e}"}
 
-
     queryset_paginated = paginator.page(page)
     comments = serializer_class(
         instance=queryset_paginated, many=True, context={"request": request}
@@ -38,10 +37,14 @@ def get_paginated_nested_serializer(
     next = ""
     url = request.build_absolute_uri()
     if queryset_paginated.has_next():
-        next = replace_query_param(url, page_kwarg, queryset_paginated.next_page_number())
+        next = replace_query_param(
+            url, page_kwarg, queryset_paginated.next_page_number()
+        )
     previous = ""
     if queryset_paginated.has_previous():
-        previous = replace_query_param(url, page_kwarg, queryset_paginated.previous_page_number())
+        previous = replace_query_param(
+            url, page_kwarg, queryset_paginated.previous_page_number()
+        )
     context = {
         "count": query_set.count(),
         "next": next,
