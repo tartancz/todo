@@ -17,9 +17,9 @@ class IndexView(ListView):
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
-            return ToDo.objects.filter(Q(created_by=self.request.user) | Q(public=True))
+            return ToDo.objects.filter(Q(created_by=self.request.user) | Q(public=True))[:10]
         else:
-            return ToDo.objects.filter(public=True)
+            return ToDo.objects.filter(public=True)[:10]
 
 
 class CreateToDoView(LoginRequiredMixin, FormView):

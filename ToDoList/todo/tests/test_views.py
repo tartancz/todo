@@ -17,7 +17,7 @@ def test_index_view_queryset(rf, load_fixtures):
     view = IndexView()
     view.request = request
     qs = view.get_queryset()
-    pytest_django.asserts.assertQuerysetEqual(ToDo.objects.filter(public=True), qs)
+    pytest_django.asserts.assertQuerysetEqual(ToDo.objects.filter(public=True)[:10], qs)
 
 
 @pytest.mark.django_db
@@ -28,7 +28,7 @@ def test_index_view_logged_in_queryset(rf, user):
     view.request = request
     qs = view.get_queryset()
     pytest_django.asserts.assertQuerysetEqual(
-        ToDo.objects.filter(Q(created_by=user) | Q(public=True)), qs
+        ToDo.objects.filter(Q(created_by=user) | Q(public=True))[:10], qs
     )
 
 
