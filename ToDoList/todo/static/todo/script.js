@@ -16,7 +16,7 @@ function getComments() {
             })
             .catch(error => console.error(error))
     }else{
-        console.log('sad')
+        document.getElementById('comment-button').style.display = 'none'
     }
 }
 function createHtmlCommend(comment) {

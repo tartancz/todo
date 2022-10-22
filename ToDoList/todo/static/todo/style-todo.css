@@ -1,3 +1,9 @@
+.comment-button{
+    border-radius: 20px;
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
 .todo{
     max-width: 700px;
     background: cadetblue;

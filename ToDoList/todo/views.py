@@ -46,6 +46,7 @@ def todo_detail_view(request, pk):
         context = {}
         context["obj"] = todo
         context['comments'] = todo.comments_in.all()[:10]
+        context['comments_count'] = todo.comments_in.all().count()
         context["comment_form"] = comment_form
         return render(request, template_name="todo/detail_view.html", context=context)
     elif request.method == "POST":
