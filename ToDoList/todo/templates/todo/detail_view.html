@@ -64,7 +64,7 @@
         {% endfor %}
     </div>
     {% if comments_count > 10 %}
-        <button onclick="getComments()" class="comment-button" id="comment-button">LOAD COMMENTS</button>
+            <button onclick="getComments()" class="load-button" id="comment-button">LOAD COMMENTS</button>
     {% endif %}
     <script src="{% static 'todo/script.js' %}"></script>
 {% endblock %}
