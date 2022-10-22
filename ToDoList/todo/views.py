@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, FormView
 from django.contrib.auth.views import redirect_to_login
+from django.core.paginator import Paginator
 
 from .forms import ToDoForm, CommentForm
 from .models import ToDo
@@ -14,13 +15,13 @@ from .models import ToDo
 class IndexView(ListView):
     template_name = "todo/index.html"
     context_object_name = "list"
+    paginate_by = 10
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
-            return ToDo.objects.filter(Q(created_by=self.request.user) | Q(public=True))[:10]
+            return ToDo.objects.filter(Q(created_by=self.request.user) | Q(public=True))
         else:
-            return ToDo.objects.filter(public=True)[:10]
-
+            return ToDo.objects.filter(public=True)
 
 class CreateToDoView(LoginRequiredMixin, FormView):
     form_class = ToDoForm
